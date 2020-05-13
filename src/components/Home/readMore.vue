@@ -34,16 +34,19 @@ export default {
 .read-more-label { 
     padding: 20px 20px 0px 0px;
 }
-.read-more-img {
+.read-more-img img{
     margin-top: -20px;
-    margin-left: 10px;
+    max-width: 190px;
+    max-height: 190px;
+    min-width: 170px;
+   
 }
 h3 {
     margin: 10px 0 0 0;
 }
 .read-more-label a { 
     
-    padding: 5% 10% 5% 10%;
+    padding: 8px 20px 8px 20px;
     text-decoration: none;
     margin-top: 30px;
     background-color: var(--green-btn);

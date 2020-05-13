@@ -2,7 +2,8 @@
 <div class="wrapper">
     <nav class="nav-tops">
         <button class="nav-btn active mark">Cases</button>
-        <button class="nav-btn dead">Dead</button>
+        <!-- <button class="nav-btn dead" v-on:click="change('deaths')">Deaths</button> -->
+        <button class="nav-btn dead">Deaths</button>
         <button class="nav-btn recov">Recovered</button>
     </nav>
     <div class="top-county">
@@ -14,12 +15,12 @@
                 <a href="./allCountys.html"><small>View All</small></a> 
             </div>
         </div>
-        <div class="g-scrolling-carousel">
+        <div class="g-scrolling-carousel" v-if="loaded">
             <div class="top-county-cards items">
                 <Carousel>
                     <Slide v-for="(country, index) in topContries" v-bind:key="index">
-                        <Card v-if="isPar(index)" :ConName="country[0]" :totalCaes="country[1]" maiColor="#fee3ce" lineColor="#6F3A18" />
-                        <Card v-else :ConName="country[0]" :totalCaes="country[1]" maiColor="#fbd4e6" lineColor="#934666" />
+                        <Card v-if="isPar(index)" :ConName="country[0]" :totalCaes="country[1]" :kind="kind" maiColor="#fee3ce" lineColor="#6F3A18" />
+                        <Card v-else :ConName="country[0]" :totalCaes="country[1]" :kind="kind" maiColor="#fbd4e6" lineColor="#934666" />
                     </Slide>
                 </Carousel>
             </div>
@@ -32,6 +33,7 @@ import { Carousel, Slide } from 'vue-carousel';
 import Card from '@/components/shared/card.vue';
 import { getSummary } from '@/services/api.service.js'
 
+
 export default {
     name: 'TopCountrys',
     components: {
@@ -40,18 +42,11 @@ export default {
         Card
     },
     data: () => ({
+        kind: 'cases',
         topContries: [],
-        d: null
+        d: null,
+        loaded: false
     }),
-    methods: {
-        isPar: function(n) {
-            if(n%2 == 0){
-                return true
-            }else {
-                return false
-            }
-        }
-    },
     async mounted () {
         const response = await getSummary()
         let SortCounfirmed = []
@@ -68,8 +63,27 @@ export default {
         topCon.push(sortedContries[0], sortedContries[1], sortedContries[2], sortedContries[3], sortedContries[4])
         
         this.topContries = topCon
-        
-    }
+        this.loaded = true
+    },
+    methods: {
+        isPar: function(n) {
+            if(n%2 == 0){
+                return true
+            }else {
+                return false
+            }
+        },
+        change: function (ca) {
+            this.loaded = false
+            const newData = []
+            this.kind = 'deaths'
+            newData.push(['colombia','20000'],['peru','4'])
+            this.topContries = newData
+            
+            console.log('dssd',ca)
+            this.loaded = true
+        }
+    },
 }
 </script>
 

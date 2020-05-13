@@ -1,11 +1,11 @@
 <template>
   <div class="card" v-bind:style="{background: maiColor}">
-      <a href="./current-report.html?county=italy"  style="text-decoration: none; color: black;">
+      <a :href="'./Current-report?country='+ConName"  style="text-decoration: none; color: black;">
           <div class="card-top">
               <div class="card-top1-county">
                   <div class="cardt-cont">
                     <img v-bind:src="falgName" width="20"/>
-                    <small>{{ ConName }}</small>
+                    <small>{{ ConName }}</small> 
                   </div>
               </div>
               <div class="card-top-county">
@@ -14,7 +14,8 @@
               </div>
           </div>
           <div class="card-body">
-            <line-chart  v-if="loaded" :chartdata="chartdata" :options="options" height="300px" />
+            <line-chart  v-if="loaded" :chartData="chartdata" :options="options" height="300px" />
+            
           </div>
       </a>
       
@@ -23,115 +24,71 @@
 </template>
 
 <script>
-import LineChart from '@/components/charts/lineMiniChart.vue'
+import LineChart from '@/components/charts/reactiveChart.vue'
 import { getCountryDataChart } from '@/services/api.service.js'
 
-function setData(result,a){
-  
-  //** CHANGE ALL ... */
-  let mounths = ['January', 'February', 'March', 'April', 'May','June', 'July', 'August', 'September', 'October', 'November', 'December'];
-  let m = [];
-  let points = [];
-      
-      
-  var mos = null;
-
-  var cont = Number(result[0].Date.split('-')[1])-1
-  
-  for(var i=0; i < result.length; i++){
-    
-    if(Number(result[i].Date.split('-')[1])-1 != cont){
-
-      
-      mos = i-1;
-      let mons = Number(result[mos].Date.split('-')[1])-1
-
-
-
-      points.push({x: Number(result[mos].Date.split('-')[1])-1, y:result[mos].Cases})
-      m.push(mounths[mons])
-      cont = Number(result[i].Date.split('-')[1])-1;
-    }
-  }
-  
-  mos = result.length-1;
-  
-  points.push({x: Number(result[mos].Date.split('-')[1])-1, y:result[mos].Cases})
-  m.push(mounths[Number(result[mos].Date.split('-')[1])-1])
-
-  a.cases = result[mos].Cases;
-  let las = new Date(result[mos].Date);
-  a.lastUp = las.toDateString()
-  let mydata = {
-    labels: m,
-    datasets: [
-      {
-        borderColor: null,
-        pointBackgroundColor: 'rgba(0, 0, 0, 0.0)',
-        pointBorderColor: 'rgba(0, 0, 0, 0.0)',
-        
-        fill: false,
-        data: points
-      }
-    ]
-  }
-
-
-  a.chartdata = mydata;
-    
-}
 
 
 export default {
   name: 'Card',
   props: {
+    kind: null,
     ConName: null,
     totalCaes: null,
     maiColor: null,
     lineColor: null
   },
+
   components: { LineChart },
-  computed: {
-    
-  },
+
   data: () => ({
-    
+    data: null,
     selected: null,
     falgName: null,
     loaded: false,
-    chartdata: null,
+    chartdata: {},
     options: {
-        title: {
-          display: false,
-          text: 'World population per region (in millions)'
-        },
-        legend: {
-            display: false
-        },
-        scales: {
-            xAxes: [{
-                gridLines: {
-                    display:false
-                },
-                ticks: {
-                    display: false
-                }
-            }],
-            yAxes: [{
-                gridLines: {
-                    display:false
-                },
-                ticks: {
-                    display: false
-                }
-            }]
-        },
-        showLines: true
+      title: {
+        display: false,
+        text: 'World population per region (in millions)'
+      },
+      legend: {
+        display: false
+      },
+      scales: {
+          xAxes: [{
+            gridLines: {
+              display:false
+            },
+            ticks: {
+              display: false
+            }
+          }],
+          yAxes: [{
+            gridLines: {
+              display:false
+            },
+            ticks: {
+              display: false
+            }
+          }]
+      },
+      showLines: true
     }
   }),
-  methods: {
+  created () {
+    console.log('created...')
+    
    
   },
+  
+  watch: {
+    kind: function () {
+      this.changeD()
+      console.log('change: '+this.kind)
+    }
+  },
+  
   async mounted (){
     
     if(this.ConName == 'united-states'){
@@ -151,12 +108,61 @@ export default {
     
     this.selected = this.ConName
 
-    const data = await getCountryDataChart(this.selected,'confirmed')
-    setData(data,this)
+    this.data = await getCountryDataChart(this.selected,'confirmed')
+    this.setData()
     this.chartdata.datasets[0].borderColor = this.lineColor
     this.loaded = true
     
   },
+  methods: {
+    changeD: async function() {
+      console.log('cahn...')
+      this.data = await getCountryDataChart(this.ConName, this.kind)
+      this.setData()
+      this.chartdata.datasets[0].borderColor = this.lineColor
+      console.log(this.data)
+      console.log(this.chartdata)
+    },
+    setData: function () {
+      let labels = []
+      let confirmed = []
+      let cont  = 0
+      let contPass = 0
+      
+      for (let report of this.data) {
+          if(cont <1 ){  
+            let day = new Date(report.Date).toLocaleDateString('en-US', {  day : 'numeric',timeZone: 'UTC'})  
+            
+            labels.push(String(day))
+            confirmed.push({y: report.Cases, x: Number(new Date(report.Date).toLocaleDateString('en-US', {  day : 'numeric',timeZone: 'UTC'}))})
+            cont+=1
+          }else{
+            if(contPass < 5) {  
+              contPass+=1
+            }else {
+              cont = 0
+              contPass = 0
+            }
+          }
+      }
+      
+      const dataGPC3 = {
+          labels: labels,
+          datasets: [{
+              label: 'Active Cases',
+              borderColor: '#B4D9D3',
+              pointBackgroundColor: 'rgba(0, 0, 0, 0.0)',
+              pointBorderColor: 'rgba(0, 0, 0, 0.0)',
+              backgroundColor: '#B4D9D3',
+              fill: false,
+              data: confirmed
+          }],
+      }
+      this.chartdata = dataGPC3
+      //console.log(this.ConName,this.chartdata)
+      this.isLoad = true
+    }
+  }
 }
 </script>
 

@@ -127,7 +127,7 @@ export default {
             let cont  = 0
             let contPass = 0
             for (let report of this.data) {
-                if(cont <=6 ){
+                if(cont <1 ){
                     
                     let day = new Date(report.Date).toLocaleDateString('en-US', {  day : 'numeric',timeZone: 'UTC'})
                     
@@ -135,7 +135,7 @@ export default {
                     activeCases.push({y: report.Active, x: Number(new Date(report.Date).toLocaleDateString('en-US', {  day : 'numeric',timeZone: 'UTC'}))})
                     cont+=1
                 }else {
-                    if(contPass <= 6) {
+                    if(contPass < 5) {
                         
                         contPass+=1
                     }else {
