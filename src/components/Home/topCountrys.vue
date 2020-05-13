@@ -32,10 +32,6 @@ import { Carousel, Slide } from 'vue-carousel';
 import Card from '@/components/shared/card.vue';
 import { getSummary } from '@/services/api.service.js'
 
-
-
-
-
 export default {
     name: 'TopCountrys',
     components: {
@@ -57,7 +53,6 @@ export default {
         }
     },
     async mounted () {
-        console.log('Loadding...')
         const response = await getSummary()
         let SortCounfirmed = []
         
@@ -68,7 +63,6 @@ export default {
         const sortedContries = SortCounfirmed.sort(function(a, b) {
             return b[1] - a[1]
         })
-
         
         let topCon = []
         topCon.push(sortedContries[0], sortedContries[1], sortedContries[2], sortedContries[3], sortedContries[4])

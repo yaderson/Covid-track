@@ -4,7 +4,7 @@
             <div class="qa-check-element">
                 <a href="/sdsd">
                     <div class="qa-img" style="width: 100%;">
-                    <img src="@/assets/media/check-self.png"  alt="">
+                        <img src="@/assets/media/check-self.png"  alt="">
                     </div>
                     <div class="qa-text">
                         <h4>Self Check up Covid-19</h4>
@@ -29,7 +29,6 @@ export default {
 }
 </script>
 <style scoped>
-
 .qa-check-element a {
     text-decoration: none;
     color: black;
@@ -38,8 +37,7 @@ export default {
     border-radius: 30px;
     background-color: var(--green);
     display: grid;
-    grid-template-columns: 40% auto auto;
-    
+    grid-template-columns: auto auto auto;
 }
 
 .qa-go-to {
@@ -53,9 +51,18 @@ export default {
 }
 .qa-img img {
     margin-top: 10px;
-    height: 160px;
-    width: 100%;
+    height: 159px;
+    width: 150px;
+    border-radius: 30px;
 }
+
+@media (min-width: 768px) and (max-width: 1024px) {
+    .qa-check-element {
+        margin: 50px;
+    }
+  
+}
+
 
 
 </style>

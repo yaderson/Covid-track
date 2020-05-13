@@ -19,15 +19,11 @@ export default {
     TotalWorld,
     TopCountrys
   },
-  computed: {
-    
-  },
   data: () =>({
     
   }),
 
   mounted (){
-    console.log('reddy')
   },
   methods: {
       

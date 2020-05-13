@@ -3,9 +3,6 @@
     <center style="display: flex; justify-content: center; align-items: flex-end; margin-bottom: 10px;">
       <div class="card-container">
         <div class="card">
-
-          
-
           <div class="card-title">
             <select v-model="selected" v-on:change="cadta">
                 <option v-for="opt in opts" :value="opt.val" :key="opt.val">{{opt.name}}</option>
@@ -78,76 +75,44 @@ function setOth(a){
 }
 function setData(result,a){
   
-  //console.log(result)
   
   let mounths = ['January', 'February', 'March', 'April', 'May','June', 'July', 'August', 'September', 'October', 'November', 'December'];
   let m = [];
   let points = [];
-  console.log(mounths[0])
-  //console.log("Cant of results",result.length)
-      
-      
-      var mos = null;
-
-      var cont = Number(result[0 ].Date.split('-')[1])-1
-      console.log('c: ',cont);
-      
-      for(var i=0; i < result.length; i++){
-        
-        if(Number(result[i].Date.split('-')[1])-1 != cont){
-
-          
-          mos = i-1;
-          let mons = Number(result[mos].Date.split('-')[1])-1
-
-
-          console.log(Number(result[mos].Date.split('-')[1])-1,' - ',result[mos].Cases);
-
-          points.push({x: Number(result[mos].Date.split('-')[1])-1, y:result[mos].Cases})
-          console.log('mounths',mons)
-          m.push(mounths[mons])
-          cont = Number(result[i].Date.split('-')[1])-1;
-        }
-      }
-      
-      /*var ex = false;
-      for(let mon in m){
-        
-        for(var i=0; i < result.length; i++){
-          console.log(mon,' - ',Number(result[mon].Date.split('-')[1])-1);
-
-          if(mon == Number(result[mon].Date.split('-')[1])-1){
-            console.log('asign')
-          }else{
-            console.log('push')
-          }
-        }
-        
-      }*/
-      mos = result.length-1;
-      //console.log(mos);
+  
+  var mos = null;
+  var cont = Number(result[0 ].Date.split('-')[1])-1    
+  for(var i=0; i < result.length; i++){
+    if(Number(result[i].Date.split('-')[1])-1 != cont){
+      mos = i-1;
+      let mons = Number(result[mos].Date.split('-')[1])-1
+      console.log(Number(result[mos].Date.split('-')[1])-1,' - ',result[mos].Cases);
       points.push({x: Number(result[mos].Date.split('-')[1])-1, y:result[mos].Cases})
-      m.push(mounths[Number(result[mos].Date.split('-')[1])-1])
-
-      a.cases = result[mos].Cases;
-      let las = new Date(result[mos].Date);
-      a.lastUp = las.toDateString()
-      let mydata = {
-      labels: m,
-      datasets: [
-        {
-          label: 'Confirmed Cases',
-          borderColor: '#f87979',
-          backgroundColor: 'rgba(0, 0, 0, 0.0)',
-          data: points
-        }
-      ]
+      console.log('mounths',mons)
+      m.push(mounths[mons])
+      cont = Number(result[i].Date.split('-')[1])-1;
     }
+  }
+    
+    mos = result.length-1;
+    points.push({x: Number(result[mos].Date.split('-')[1])-1, y:result[mos].Cases})
+    m.push(mounths[Number(result[mos].Date.split('-')[1])-1])
+    a.cases = result[mos].Cases;
+    let las = new Date(result[mos].Date);
+    a.lastUp = las.toDateString()
+    let mydata = {
+    labels: m,
+    datasets: [
+      {
+        label: 'Confirmed Cases',
+        borderColor: '#f87979',
+        backgroundColor: 'rgba(0, 0, 0, 0.0)',
+        data: points
+      }
+    ]
+  }
 
-
-    a.chartdata = mydata;
-    //a.loaded = true;
-    //console.log(this.chartdata);
+  a.chartdata = mydata;
 }
 const countries = require('@/assets/countries.json');
 
@@ -169,14 +134,12 @@ export default {
   data: () => ({
     con: countries,
     cases: String,
-
     lastUp: String,
     NewDeaths: String,
     TotalDeaths: String,
     NewRecovered: String,
     TotalRecovered:  String,
     selected: null,
-
     loaded: false,
     chartdata: null,
     options: {
@@ -192,7 +155,6 @@ export default {
       this.NewRecovered = 'loading...';
       this.TotalRecovered = 'loading...';
       getData('total',this.selected,'confirmed',this, (data)=>{
-        //console.log(data[0])
         setData(data,this);
         setOth(this);
       });

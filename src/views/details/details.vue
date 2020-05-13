@@ -15,7 +15,6 @@
                         <g id="surface1488345">
                         <path v-if="!isSubscribe" style=" stroke:none;fill-rule:nonzero;fill:rgb(80%,80%,80%);fill-opacity:1;" d="M 12 2 C 11.171875 2 10.5 2.671875 10.5 3.5 L 10.5 4.195312 C 7.914062 4.863281 6 7.203125 6 10 L 6 16 L 4.464844 17.15625 C 4.175781 17.339844 4 17.65625 4 18 C 4 18.550781 4.449219 19 5 19 L 19 19 C 19.550781 19 20 18.550781 20 18 C 20 17.65625 19.824219 17.339844 19.539062 17.15625 L 18 16 L 18 10 C 18 7.203125 16.085938 4.863281 13.5 4.195312 L 13.5 3.5 C 13.5 2.671875 12.828125 2 12 2 Z M 10 20 C 10 21.101562 10.898438 22 12 22 C 13.101562 22 14 21.101562 14 20 Z M 10 20 "/>
                         <path v-if="isSubscribe" style=" stroke:none;fill-rule:nonzero;fill:#82d8ca;fill-opacity:1;" d="M 12 2 C 11.171875 2 10.5 2.671875 10.5 3.5 L 10.5 4.195312 C 7.914062 4.863281 6 7.203125 6 10 L 6 16 L 4.464844 17.15625 C 4.175781 17.339844 4 17.65625 4 18 C 4 18.550781 4.449219 19 5 19 L 19 19 C 19.550781 19 20 18.550781 20 18 C 20 17.65625 19.824219 17.339844 19.539062 17.15625 L 18 16 L 18 10 C 18 7.203125 16.085938 4.863281 13.5 4.195312 L 13.5 3.5 C 13.5 2.671875 12.828125 2 12 2 Z M 10 20 C 10 21.101562 10.898438 22 12 22 C 13.101562 22 14 21.101562 14 20 Z M 10 20 "/>
-
                         </g>
                         </svg>
                     </div>
@@ -24,7 +23,6 @@
         </nav>
         <section v-if="isLoaded" class="components">
             <qaBlog />
-
             <section class="latest-update">
                 <div class="wrapper">
                     <div class="latest-update-tittle">
@@ -38,12 +36,8 @@
                     </div>
                 </div>
             </section>
-           
             <currentReport2 :lastData="lastUpdate" />
             <graphic :data="graphicData"/>
-            
-                
-            
         </section>
         <section v-else>
             <div class="wrapper">
@@ -82,7 +76,6 @@ export default {
     },
     data: () => ({
         chartload: false,
-        
         isLoaded: false,
         Countries,
         countySelected: null,
@@ -95,12 +88,9 @@ export default {
     }),
     
     async mounted () {
-        console.log(this.countySelected)
-
         //*********** ASINGNAR IP COUNTRY */
         let ip
         ip = this.$route.query.country
-        console.log(ip)
         
         if(!ip){
             const r = await getMyCounty()
@@ -112,7 +102,7 @@ export default {
             })
         }
         this.countySelected = ip
-        console.log(this.countySelected)
+
         //******************************** */
         this.chartload = true
         this.initializer()
@@ -120,7 +110,6 @@ export default {
     methods: {
         initializer: async function() {
             this.isLoaded = false
-            console.log('For Country:',this.countySelected)
             const result = await getAllStatus(this.countySelected)
             const length = result.length
             this.upNumber = length-1
@@ -131,7 +120,6 @@ export default {
             this.chartload = true
         },
         subscribe: function() {
-            console.log(new Date())
             if(!this.isSubscribe) {
                 this.isSubscribe = true
             }else {
@@ -185,7 +173,10 @@ export default {
     margin: 15px 0 0 0;
 }
 .lastes-update-info a {
-    font-size: 15px;
+    font-size: 12px;
+}
+.lastes-update-info h4 {
+    font-size: 82%;
 }
 
 

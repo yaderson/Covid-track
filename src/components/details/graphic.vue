@@ -21,9 +21,6 @@
 <script>
 import reactiveChart from '@/components/charts/reactiveChart.vue'
 
-
-
-
 export default {
     name:'graphic',
     components: { 
@@ -61,9 +58,6 @@ export default {
             }
         }
     }),
-    created () {
-        console.log('...created')
-    },
     async mounted () {
         if(this.mode) {
             switch (this.mode) {
@@ -79,7 +73,6 @@ export default {
             }
         }else {
             this.Daily()
-            
         }
         
         this.isLoad = true
@@ -112,7 +105,6 @@ export default {
                 let mon = new Date(report.Date).toLocaleDateString('en-US', {  month : 'numeric',timeZone: 'UTC'})
                 labels.push(String(day)+'/'+String(mon))
                 activeCases.push({y: report.Active, x: Number(new Date(report.Date).toLocaleDateString('en-US', {  day : 'numeric',timeZone: 'UTC'}))})
-                
             }
             
             const dataGPC3 = {
@@ -211,7 +203,6 @@ export default {
 }
 hr{
     border-color: #cccccc;
-
 }
 .active-cases-opt button {
     height: 30px;

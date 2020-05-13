@@ -60,11 +60,8 @@ export default {
     }),
     async mounted () {
         const data = await axios.get('https://api.covid19api.com/summary')
-        
-        console.log(data.data.Global)
         this.afected = data.data.Global.TotalConfirmed
         this.activeCases = 2355803
-        
 
         const dataCtx = {
             datasets: [{
@@ -77,7 +74,6 @@ export default {
                 0, 0
             ]
             // These labels appear in the legend and in the tooltips when hovering different arcs
-
         }
         this.chartdata = dataCtx
         this.isLoaded = true

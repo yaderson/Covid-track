@@ -26,8 +26,9 @@ async function getAllStatus (Getcountry) {
 }
 
 async function getMyCounty () {
-    const data = await axios.get('http://ip-api.com/json/')
-    return data.data.countryCode
+    const data = await axios.get('https://www.cloudflare.com/cdn-cgi/trace')
+    const countryCode = data.data.split('\n')[8].split('=')[1]
+    return countryCode
 }
 module.exports =  {
     getSummary,

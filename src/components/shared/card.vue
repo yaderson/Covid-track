@@ -28,18 +28,15 @@ import { getCountryDataChart } from '@/services/api.service.js'
 
 function setData(result,a){
   
-  console.log(result)
-  
+  //** CHANGE ALL ... */
   let mounths = ['January', 'February', 'March', 'April', 'May','June', 'July', 'August', 'September', 'October', 'November', 'December'];
   let m = [];
   let points = [];
-  //console.log(mounths[0])
       
       
   var mos = null;
 
   var cont = Number(result[0].Date.split('-')[1])-1
-  //console.log('c: ',cont);
   
   for(var i=0; i < result.length; i++){
     
@@ -50,10 +47,8 @@ function setData(result,a){
       let mons = Number(result[mos].Date.split('-')[1])-1
 
 
-      //console.log(Number(result[mos].Date.split('-')[1])-1,' - ',result[mos].Cases);
 
       points.push({x: Number(result[mos].Date.split('-')[1])-1, y:result[mos].Cases})
-      //console.log('mounths',mons)
       m.push(mounths[mons])
       cont = Number(result[i].Date.split('-')[1])-1;
     }

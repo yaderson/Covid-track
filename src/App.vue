@@ -38,19 +38,11 @@
 <script>
 
 export default {
-
-  computed: {
-    
-  },
   data: () =>({
     
   }),
 
   mounted (){
-    console.log('readdy')
-  },
-  methods: {
-    
   }
 }
 </script>
