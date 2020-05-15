@@ -13,7 +13,10 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: Home
+    component: Home,
+    meta: {
+      title: 'Home'
+    }
   },
   {
     path: '/current-report',
@@ -21,31 +24,47 @@ const routes = [
       name:'country'
     },
     name: 'current-report',
-    component: CurrentReport
+    component: CurrentReport,
+    meta: {
+      title: 'Current-report'
+    }
   },
   {
     path: '/care',
     name: 'Care',
-    component: Care
+    component: Care,
+    meta: {
+      title: 'Care'
+    }
   },
   {
     path: '/settings',
     name: 'Settings',
-    component: Settings
+    component: Settings,
+    meta: {
+      title: 'Settings'
+    }
   },
   {
     path: '/algo',
     name: 'HelloWorld',
-    component: HelloWorld
+    component: HelloWorld,
+    meta: {
+      title: 'Card Chart'
+    }
   },
-  { path: '/404', component: notFound },  
+  { path: '/404', component: notFound,    meta: {title: '404'} },  
   { path: '*', redirect: '/404' }
 ]
+
 
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes
 })
-
+router.beforeEach((to, from, next) => {
+  document.title = to.meta.title
+  next()
+})
 export default router

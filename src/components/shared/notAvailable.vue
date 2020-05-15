@@ -29,8 +29,8 @@ export default {
 </script>
 <style scoped>
 center {
-    margin-top: 60%;
-    font-size: 50px;
+    margin-top: 25vh;
+    font-size: 30px;
     color: var(--text-gray);
     margin-bottom: 100px;
 }

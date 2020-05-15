@@ -14,6 +14,7 @@ import TopCountrys from '@/components/Home/topCountrys.vue'
 
 export default {
   name: 'Home',
+  title: 'mome meo',
   components: {
     ReadMore,
     TotalWorld,

@@ -104,8 +104,8 @@ export default {
     }
     
     this.selected = this.ConName
-    this.data = await getCountryDataChart(this.selected,'confirmed')
-    this.setData()
+    this.data = await getCountryDataChart(this.selected,'confirmed')//getData
+    this.setData() //Use data
     this.chartdata.datasets[0].borderColor = this.lineColor
     this.loaded = true
     
@@ -128,8 +128,8 @@ export default {
       }
     },
     changeD: async function() {
-      this.data = await getCountryDataChart(this.ConName, this.kind)
-      this.setData()
+      this.data = await getCountryDataChart(this.ConName, this.kind) //Get data
+      this.setData() // Use Data
       this.chartdata.datasets[0].borderColor = this.lineColor
     },
     setData: function () {
@@ -137,21 +137,22 @@ export default {
       let confirmed = []
       let cont  = 0
       let contPass = 0
-      
+      let major = 0
       for (let report of this.data) {
-          if(cont <1 ){  
-            let day = new Date(report.Date).toLocaleDateString('en-US', {  day : 'numeric',timeZone: 'UTC'})
-            labels.push(String(day))
-            confirmed.push({y: report.Cases, x: Number(new Date(report.Date).toLocaleDateString('en-US', {  day : 'numeric',timeZone: 'UTC'}))})
-            cont+=1
-          }else{
-            if(contPass < 5) {  
-              contPass+=1
-            }else {
-              cont = 0
-              contPass = 0
-            }
+        if(report.Cases > major) major = report.Cases
+        if(cont <1 ){  
+          let day = new Date(report.Date).toLocaleDateString('en-US', {  day : 'numeric',timeZone: 'UTC'})
+          labels.push(String(day)) 
+          confirmed.push({y: report.Cases, x: Number(new Date(report.Date).toLocaleDateString('en-US', { day : 'numeric',timeZone: 'UTC'}))})
+          cont+=1
+        }else{
+          if(contPass < 5) {  
+            contPass+=1
+          }else {
+            cont = 0
+            contPass = 0
           }
+        }
       }
       
       const dataGPC3 = {
