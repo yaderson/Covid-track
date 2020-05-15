@@ -66,7 +66,7 @@ export default {
           }],
           yAxes: [{
             gridLines: {
-              display:false
+              display: false
             },
             ticks: {
               display: false
@@ -77,15 +77,12 @@ export default {
     }
   }),
   created () {
-    console.log('created...')
-    
-   
   },
   
   watch: {
     kind: function () {
+      this.imgFlg()
       this.changeD()
-      console.log('change: '+this.kind)
     }
   },
   
@@ -107,7 +104,6 @@ export default {
     }
     
     this.selected = this.ConName
-
     this.data = await getCountryDataChart(this.selected,'confirmed')
     this.setData()
     this.chartdata.datasets[0].borderColor = this.lineColor
@@ -115,13 +111,26 @@ export default {
     
   },
   methods: {
+    imgFlg: function () {
+      if(this.ConName == 'united-states'){
+        this.falgName = `https://img.icons8.com/color/48/000000/usa.png`
+      }else {
+        if(this.ConName == 'russia'){
+          this.falgName = 'https://img.icons8.com/color/48/000000/russian-federation.png'
+        }else {
+          if(this.ConName == 'united-kingdom'){
+            this.falgName = 'https://img.icons8.com/color/48/000000/great-britain.png'
+          }else{
+            this.falgName = `https://img.icons8.com/color/48/000000/${this.ConName}.png`
+          }
+          
+        }
+      }
+    },
     changeD: async function() {
-      console.log('cahn...')
       this.data = await getCountryDataChart(this.ConName, this.kind)
       this.setData()
       this.chartdata.datasets[0].borderColor = this.lineColor
-      console.log(this.data)
-      console.log(this.chartdata)
     },
     setData: function () {
       let labels = []
@@ -131,8 +140,7 @@ export default {
       
       for (let report of this.data) {
           if(cont <1 ){  
-            let day = new Date(report.Date).toLocaleDateString('en-US', {  day : 'numeric',timeZone: 'UTC'})  
-            
+            let day = new Date(report.Date).toLocaleDateString('en-US', {  day : 'numeric',timeZone: 'UTC'})
             labels.push(String(day))
             confirmed.push({y: report.Cases, x: Number(new Date(report.Date).toLocaleDateString('en-US', {  day : 'numeric',timeZone: 'UTC'}))})
             cont+=1
@@ -159,7 +167,6 @@ export default {
           }],
       }
       this.chartdata = dataGPC3
-      //console.log(this.ConName,this.chartdata)
       this.isLoad = true
     }
   }

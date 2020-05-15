@@ -1,10 +1,11 @@
 <template>
 <div class="wrapper">
     <nav class="nav-tops">
-        <button class="nav-btn active mark">Cases</button>
-        <!-- <button class="nav-btn dead" v-on:click="change('deaths')">Deaths</button> -->
-        <button class="nav-btn dead">Deaths</button>
-        <button class="nav-btn recov">Recovered</button>
+        <!-- Change for class mark -->
+        <button class="nav-btn active mark" v-on:click="chageTocases()" v-bind:style="{background: casesColor}">Cases</button>
+        <button class="nav-btn dead" v-on:click="change()" v-bind:style="{background: deathsColor}">Deaths</button>
+        <!-- <button class="nav-btn dead">Deaths</button> -->
+        <button class="nav-btn recov" v-on:click="Recovered()" v-bind:style="{backgroundColor: recoveredColor}">Recovered</button>
     </nav>
     <div class="top-county">
         <div class="top-county-title">
@@ -34,6 +35,8 @@ import Card from '@/components/shared/card.vue';
 import { getSummary } from '@/services/api.service.js'
 
 
+
+
 export default {
     name: 'TopCountrys',
     components: {
@@ -42,27 +45,19 @@ export default {
         Card
     },
     data: () => ({
-        kind: 'cases',
+        kind: 'confirmed',
         topContries: [],
         d: null,
-        loaded: false
+        loaded: false,
+        response: [],
+        casesColor: 'var(--red-btn)',
+        deathsColor: 'transparent',
+        recoveredColor: 'transparent'
     }),
+    //TODO: Change for sort object
     async mounted () {
-        const response = await getSummary()
-        let SortCounfirmed = []
-        
-        response.forEach(async element => {
-            
-            SortCounfirmed.push([element.countryName,element.countyTotalConfirmed])
-        });
-        const sortedContries = SortCounfirmed.sort(function(a, b) {
-            return b[1] - a[1]
-        })
-        
-        let topCon = []
-        topCon.push(sortedContries[0], sortedContries[1], sortedContries[2], sortedContries[3], sortedContries[4])
-        
-        this.topContries = topCon
+        this.response = await getSummary()
+        this.chageTocases()
         this.loaded = true
     },
     methods: {
@@ -73,14 +68,63 @@ export default {
                 return false
             }
         },
-        change: function (ca) {
+        chageTocases: function () {
+            this.casesColor = 'var(--red-btn)'
+            this.deathsColor = 'transparent'
+            this.recoveredColor = 'transparent'
+
+            let SortCounfirmed = []
+        
+            this.response.forEach(element => {
+                
+                SortCounfirmed.push([element.countryName,element.countyTotalConfirmed])
+            });
+            const sortedContries = SortCounfirmed.sort(function(a, b) {
+                return b[1] - a[1]
+            })
+            
+            let topCon = []
+            this.kind = 'confirmed'
+            topCon.push(sortedContries[0], sortedContries[1], sortedContries[2], sortedContries[3], sortedContries[4])
+            
+            this.topContries = topCon
+        },
+        change: function () {
+            this.casesColor = 'transparent'
+            this.deathsColor = 'var(--red-btn)'
+            this.recoveredColor = 'transparent'
+            let deaths = []
+            this.response.forEach(element => {
+                deaths.push([element.countryName, element.countyTotalDeaths])
+            })
+            
+            const sortedDeaths = deaths.sort(function (a, b){
+                return b[1] - a[1]
+            })
             this.loaded = false
             const newData = []
             this.kind = 'deaths'
-            newData.push(['colombia','20000'],['peru','4'])
+            newData.push(sortedDeaths[0], sortedDeaths[1], sortedDeaths[2], sortedDeaths[3], sortedDeaths[4])
             this.topContries = newData
+            this.loaded = true
+        },
+        Recovered: function () {
+            this.casesColor = 'transparent'
+            this.deathsColor = 'transparent'
+            this.recoveredColor = 'var(--red-btn)'
+            let deaths = []
+            this.response.forEach(element => {
+                deaths.push([element.countryName, element.countyTotalRecovered])
+            })
             
-            console.log('dssd',ca)
+            const sortedDeaths = deaths.sort(function (a, b){
+                return b[1] - a[1]
+            })
+            this.loaded = false
+            const newData = []
+            this.kind = 'recovered'
+            newData.push(sortedDeaths[0], sortedDeaths[1], sortedDeaths[2], sortedDeaths[3], sortedDeaths[4])
+            this.topContries = newData
             this.loaded = true
         }
     },
