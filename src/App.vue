@@ -60,7 +60,7 @@ export default {
     --red-btn: #FBB0AD;
     --red-btn-text: #832c30;
     /* CRR */
-    --text-gray: #948d8d;
+    --text-gray: #757070;
 
 }
 body { 

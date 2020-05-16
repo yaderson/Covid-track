@@ -86,9 +86,9 @@ function setData(result,a){
     if(Number(result[i].Date.split('-')[1])-1 != cont){
       mos = i-1;
       let mons = Number(result[mos].Date.split('-')[1])-1
-      console.log(Number(result[mos].Date.split('-')[1])-1,' - ',result[mos].Cases);
+      
       points.push({x: Number(result[mos].Date.split('-')[1])-1, y:result[mos].Cases})
-      console.log('mounths',mons)
+      
       m.push(mounths[mons])
       cont = Number(result[i].Date.split('-')[1])-1;
     }

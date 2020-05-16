@@ -5,9 +5,11 @@
                 <div class="top-contain">
                     <div class="top-tittle">
                         <h3>Current Outbreak</h3>
-                        <select name="Countries" v-model="countySelected" v-on:change="initializer">
+                        
+                        <select id="Countries" name="Countries" v-model="countySelected" v-on:change="initializer">
                             <option v-for="Country in Countries" :slug="Country.Slug" :value="Country.Slug"  :key="Country.value">{{ Country.Country }}</option>
                         </select>
+                        <label for="Countries" style="color:transparent">|</label>
                         <h4>{{ now }}</h4>
                     </div>
                     <div class="top-notify">

@@ -12,7 +12,7 @@
                         </svg>
                     </div>
                     <div class="card-report-body">
-                        <h4 style="color: #B05332;">{{lastData.Confirmed}}</h4>
+                        <h4 style="color: #96472b;">{{lastData.Confirmed}}</h4>
                         <small>Infected</small>
                     </div>
                 </div>
@@ -27,7 +27,7 @@
                         </svg>
                     </div>
                     <div class="card-report-body">
-                        <h4 style="color: #D73662;">{{lastData.Recovered}}</h4>
+                        <h4 style="color: #a4294b;">{{lastData.Recovered}}</h4>
                         <small>Recovered</small>
                     </div>
                 </div>
@@ -42,7 +42,7 @@
                         </svg>    
                     </div>
                     <div class="card-report-body">
-                        <h4 style="color: #B05332;">{{lastData.Deaths}}</h4>
+                        <h4 style="color: #96472b;">{{lastData.Deaths}}</h4>
                         <small>Deaths</small>
                     </div>
                 </div>
