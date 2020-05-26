@@ -90,6 +90,9 @@ export default {
     }),
     
     async mounted () {
+        navigator.serviceWorker.getRegistration().then((registration) => {
+            registration.pushManager.getSubscription().then(this.verifySubscription)
+        })
         //*********** ASINGNAR IP COUNTRY */
         let ip
         ip = this.$route.query.country
@@ -121,9 +124,46 @@ export default {
             this.isLoaded = true
             this.chartload = true
         },
+        getPublicKey: function () {
+            return fetch('https://push-notifications-yader.herokuapp.com/Key')
+                .then(res => res.arrayBuffer())
+                .then(key => new Uint8Array(key) )
+        },
+        verifySubscription: function(status)  {
+            if(status) {
+                this.isSubscribe = true
+            }
+        },
         subscribe: function() {
             if(!this.isSubscribe) {
                 this.isSubscribe = true
+                //new Notification('HOLA')
+                
+                if ('PushManager' in window) {
+                    Notification.requestPermission()
+                    navigator.serviceWorker.getRegistration().then(registration => {
+                        registration.pushManager.getSubscription().then((sub) => {
+                            if(!sub) {
+                                this.getPublicKey().then((key) => {
+                                    registration.pushManager.subscribe({
+                                        userVisibleOnly: true,
+                                        applicationServerKey: key
+                                    })
+                                    .then(res => res.toJSON())
+                                    .then((subscription) => {
+                                        
+                                        fetch('https://push-notifications-yader.herokuapp.com/Subscribe',{method: 'POST', headers:{'Content-Type': 'application/json'} ,body: JSON.stringify(subscription)})
+                                        .then( this.verifySubscription )
+                                    })
+                                })
+                            }
+                        })
+                    })
+                }else {
+                    window.alert('Cannot Activete Notifications in this Browsers :(')
+                    return
+                }
+                
             }else {
                 this.isSubscribe = false
             }
@@ -180,6 +220,8 @@ export default {
 .lastes-update-info h4 {
     font-size: 82%;
 }
-
+a {
+    color:black;
+}
 
 </style>

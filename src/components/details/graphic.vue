@@ -8,12 +8,12 @@
                     <svg v-else fill="#000000" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="15px" height="24px">    <path d="M 22 2 L 16.699219 2.8007812 L 18.242188 4.34375 L 15.177734 7.4082031 L 13.568359 5.9003906 L 9.4921875 10.078125 L 8.0078125 8.59375 L 3.3027344 13.203125 L 4.703125 14.630859 L 7.9921875 11.40625 L 9.5078125 12.921875 L 13.630859 8.6992188 L 15.222656 10.191406 L 19.65625 5.7578125 L 21.199219 7.3007812 L 22 2 z M 19 10 L 19 21 L 21 21 L 21 10 L 19 10 z M 15 12 L 15 21 L 17 21 L 17 12 L 15 12 z M 11 14 L 11 21 L 13 21 L 13 14 L 11 14 z M 7 16 L 7 21 L 9 21 L 9 16 L 7 16 z M 3 18 L 3 21 L 5 21 L 5 18 L 3 18 z"/></svg>
                 </div>
                 <div class="active-cases-opt">
-                    <button class="cases-btn-select" v-bind:style="{borderColor: borderDaily}" v-on:click="changeMode('borderDaily')">Daily</button>
-                    <button class="cases-btn-select" v-bind:style="{borderColor: borderWeekly}" v-on:click="changeMode('borderWeekly')">Weekly</button>
-                    <button class="cases-btn-select" v-bind:style="{borderColor: borderMounthly}" v-on:click="changeMode('borderMounthly')">Mounthly</button>
+                    <button :class="{active: borderDaily}" v-on:click="changeMode('borderDaily')">Daily</button>
+                    <button :class="{active: borderWeekly}" v-on:click="changeMode('borderWeekly')">Weekly</button>
+                    <button :class="{active: borderMounthly}" v-on:click="changeMode('borderMounthly')">Mounthly</button>
                 </div>
             </nav>
-            <div class="active-cases-chart" style="margin-top: 10px; margin-bottom: 60px;">
+            <div class="active-cases-char   t" style="margin-top: 10px; margin-bottom: 60px;">
                 <reactiveChart :chartData="dchar" :options="options" height="400px" />
                 <!-- <h4 v-else>Load Chart Data...</h4> -->
             </div>
@@ -35,10 +35,11 @@ export default {
         dchar: {},
         isLoad: false,
         mode: 'Daily',
-        borderDaily: '#b4d9d3 !important',
-        borderWeekly: 'transparent',
-        borderMounthly: 'transparent',
+        borderDaily: true,
+        borderWeekly: false,
+        borderMounthly: false,    
         isIncrease: true,
+        isClass: false,
         options: {
             title: {
             display: false
@@ -71,7 +72,7 @@ export default {
                     this.Weekly()
                     break
                 case 'Mounthly':
-                    this.Mounthly()
+                    this.Mounthly() 
                     break
             }
         }else {
@@ -86,22 +87,22 @@ export default {
                 this.isIncrease = false
             }
         },
-        changeMode: function(mode) {
-            this.borderDaily = 'transparent'
-            this.borderWeekly = 'transparent'
-            this.borderMounthly = 'transparent'
+        changeMode: function(mode) {this.isClass = true
+            this.borderDaily = false
+            this.borderWeekly = false
+            this.borderMounthly = false
             switch (mode){
                 case 'borderDaily':
-                    this.borderDaily = '#b4d9d3 !important'
+                    this.borderDaily = true
                     this.Daily()
                     break
                 case 'borderWeekly':
-                    this.borderWeekly = '#b4d9d3 !important'
+                    this.borderWeekly = true
                     this.Weekly()
                     break
                 case 'borderMounthly':
                     this.Mounthly()
-                    this.borderMounthly = '#b4d9d3 !important'
+                    this.borderMounthly = true
                     break
             }
         },
@@ -210,12 +211,12 @@ export default {
     margin-top: 10px;
 }
 .active-cases-opt {
-    margin-bottom: 60px;
+    margin-bottom: 40px;
 }
 hr{
     border-color: #cccccc;
 }
-.active-cases-opt button {
+button {
     height: 30px;
     background: transparent;
     border: none;
@@ -224,7 +225,10 @@ hr{
     font-size: 15px;
     
 }
-.cases-btn-select {
-    border-bottom: 2px solid transparent !important;
+button:hover {
+    background-color: rgba(180, 217, 211, 0.308);
+}
+.active {
+    border-bottom:  2px solid#b4d9d3 !important;
 }
 </style>
