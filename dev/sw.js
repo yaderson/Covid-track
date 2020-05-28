@@ -6,5 +6,9 @@ self.addEventListener('push', (e) => {
         body: notify.body,
         icon: './img/icons/android-chrome-192x192.png'
     }
-    e.waitUntil(self.registration.showNotification(title,options))
+    const not  = e.waitUntil(self.registration.showNotification(title,options))
+    not.onclick = function(event) {
+        event.preventDefault(); // Previene al buscador de mover el foco a la pestaña del Notification
+        window.open(`https://covid-track-yader.web.app/Current-report?country=${notify.slug}`, '_blank');
+    }
 })

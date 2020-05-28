@@ -137,6 +137,7 @@ export default {
         subscribe: function() {
             if(!this.isSubscribe) {
                 this.isSubscribe = true
+                
                 //new Notification('HOLA')
                 
                 if ('PushManager' in window) {
@@ -151,8 +152,11 @@ export default {
                                     })
                                     .then(res => res.toJSON())
                                     .then((subscription) => {
-                                        
-                                        fetch('https://push-notifications-yader.herokuapp.com/Subscribe',{method: 'POST', headers:{'Content-Type': 'application/json'} ,body: JSON.stringify(subscription)})
+                                        const mySub  = {
+                                            sub: subscription,
+                                            condition: this.countySelected
+                                        }
+                                        fetch('https://push-notifications-yader.herokuapp.com/Subscribe',{method: 'POST', headers:{'Content-Type': 'application/json'} ,body: JSON.stringify(mySub)})
                                         .then( this.verifySubscription )
                                     })
                                 })
